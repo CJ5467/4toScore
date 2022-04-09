@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+
+:root{
+    --green: rgb(83, 2, 2);
+
+}
+
+*{
+    font-family: 'Open Sans', snas-serif;
+    margin:0; padding:0;
+    box-sizing: border-box;
+    text-decoration: none;
+    outline:none;
+    border:none;
+    /*text-transform: capitalize;*/
+    transition: all .2s linear;
+}
+
+/*centering images */
+.center{
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    width:40%;
+    height:40%;
+}
+
+/* Three image containers (use 25% for four, and 50% for two, etc) */
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+  
+  /* Clear floats after image containers */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+*::selection{
+    background:var(--green);
+    color:black;
+}
+
+html{
+    font-size: 62.5%;
+    overflow-x: hidden; 
+}
+
+section{
+    padding:0 7%;
+    padding-top: 12rem;
+}
+
+body{
+    background-image: linear-gradient(180deg, rgb(46, 46, 46), rgb(83, 2, 2));
+}
+
+
+
+.btn{
+    font-size: 2rem;
+    padding:.7rem 3rem;
+    background:var(--green);
+    color:#fff;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.btn:hover{
+    background:#333;
+}
+
+header{
+    position: fixed;
+    top:0; left:0;
+    z-index: 1000;
+    background-image: linear-gradient(180deg, rgb(46, 46, 46), rgb(83, 2, 2));
+    box-shadow: 0 .1rem .3rem rgba(0, 0, 0, .3);
+    width:100%;
+}
+
+header .heading{
+    font-size: 3rem;
+    color:#666;
+    padding:1rem;
+    text-align: center;
+}
+
+header #menu{
+    font-size: 3rem;
+    color:#666;
+    cursor: pointer;
+    margin:1rem;
+    display: none;
+}
+
+header .navbar ul{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+    background:var(--green);
+    padding:1rem; 
+}
+
+header .navbar ul li{
+    margin:0 1.5rem;
+}
+
+header .navbar ul li a{
+    font-size: 2rem;
+    color:#fff;
+}
+
+header .navbar ul li a:hover{
+    color:#444;
+}
+
+
+.home{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-image: linear-gradient(180deg, rgb(46, 46, 46), rgb(83, 2, 2));
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    flex-wrap: wrap;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: rgb(83, 2, 2);
+    color: white;
+    padding: 16px;
+    font-size: 2rem;
+    border: none;
+  }
+  
+  /* The container <div> - needed to position the dropdown content */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgb(83, 2, 2);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    font-size: 2rem;
+    text-decoration: none;
+    display: block;
+  }
+
+ 
+  
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {background-color: #ddd;}
+
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {display: block;}
+  
+  /* Change the background color of the dropdown button when the dropdown content is shown */
+  .dropdown:hover .dropbtn {background-color: rgb(83, 2, 2);}
+
+.home .content2{
+    color:white;
+}
+
+.home .content2 h1{
+    font-size:48px;
+}
+
+.home .content2 p{
+    font-size:24px;
+}
+
+.home .leftdiv{
+    color:white;
+    float:left;
+}
+
+.startedbtn{
+  border-style:solid;
+  background-color: black;
+  width: 60%;
+  color: white;
+  font-size: 24px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+
+.home .rightdiv{
+    float:right;
+}
+
+.home .leftdiv h1{
+    font-size:48px;
+}
+
+.home .leftdiv p{
+    font-size:24px;
+}
+
+
+/* media queries  */
+
+@media (max-width:768px){
+
+    html{
+        font-size: 55%;
+    }
+
+    .home .content{
+        text-align: center;
+    }
+
+    .home .content h1{
+        font-size: 4rem;
+    }
+    
+
+    .about .content h1{
+        font-size: 4rem;
+    }
+
+}
+
+@media (max-width:500px){
+
+    html{
+        font-size: 50%;
+    }
+
+    header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding:0 1rem;
+    }
+
+    header #menu{
+        display: block;
+    }
+
+    header .navbar{
+        position: fixed;
+        top:6.2rem; right:-120%;
+        height:100%;
+        width:100%;
+        border-top: .2rem solid rgba(0,0,0,.3);
+    }
+
+    header .navbar ul{
+        height:100%;
+        width:100%;
+        flex-flow: column;
+        background:#fff;
+        padding-bottom: 15rem;
+    }
+
+    header .navbar ul li{
+        text-align: center;
+        width:100%;
+        margin:1rem 0;
+    }
+
+    header .navbar ul li a{
+        font-size: 4rem;
+        color:#333;
+        display: block;
+    }
+
+    header .navbar ul li a:hover{
+        color:var(--green);
+    }
+
+    .fa-times{
+        transform: rotate(180deg);
+    }
+
+    header .navbar.nav-toggle{
+        right:0;
+    }
+
+    section{
+        padding-top: 5rem;
+    }
+
+    .footer .box-container .box:last-child{
+        text-align: center;
+    }
+
+    .footer .box-container .box:last-child p{
+        font-size: 1.7rem;
+    }
+
+    .footer .box-container .box:last-child form{
+        flex-flow: column;
+    }
+
+    .footer .box-container .box:last-child form .btn{
+        margin-top: 1rem;
+        width:100%;
+    }
+}
