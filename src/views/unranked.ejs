@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unranked game</title>
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+    <!-- custom css file link -->
+    <link rel="stylesheet" href="css/main.css">
+
+    <style>
+        canvas {
+          width: 950px;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <!-- jquery cdn link  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- custom js file link  -->
+    <script src="js/script.js"></script>
+
+    <!-- header section starts  -->
+    <header>
+        <h1 class="heading">Unranked Game</h1>
+        <div id="menu" class="fas fa-bars"></div>
+        <nav class="navbar">
+            <ul>
+                <li><a href='/'>Home</a></li>
+                <div class="dropdown">
+                    <button class="dropbtn">Play
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="unranked">Unranked Match</a>
+                        <a href="ranked">Ranked Match</a>
+                        <a href="">Play with Friends</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">Learn More
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="howtoplay">How To Play</a>
+                        <a href="eloranking">ELO Ranking System</a>
+                    </div>
+                </div>
+                <li><a href='aboutus'>About Us</a></li>
+                <li><a href='searchplayers'>Find Players</a></li>
+                <div class="dropdown">
+                    <button class="dropbtn"> <%= user.username %>
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="profile">Profile</a>
+                        <form method="POST" action="/logout">
+                            <button type="submit" class="btn btn-primary">Log out</button>
+                        </form>
+                    </div>
+                </div>
+            </ul>
+        </nav>
+    </header>
+    <!-- header section ends-->
+    <section class="game">
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+        <script src="js/game.js" type='module'></script>
+    </section>
+</body>
+</html>
