@@ -337,12 +337,12 @@ export default class GameScene extends Phaser.Scene {
                         }
                     }
                     else if (j >= 3){
-                        if (col[j] === 'r' && this.getBoardFromCol(i-1)[j+1] === 'r' && this.getBoardFromCol(i-2)[j+2] === 'r' && this.getBoardFromCol(i-3)[j+3] === 'r'){
+                        if (col[j] === 'r' && this.getBoardFromCol(i-1)[j-1] === 'r' && this.getBoardFromCol(i-2)[j-2] === 'r' && this.getBoardFromCol(i-3)[j-3] === 'r'){
                             // red won diagonally
                             this.socket.emit('gameOver', 'red');
                             this.gameOver = true;
                         }
-                        else if (col[j] === 'y' && this.getBoardFromCol(i-1)[j+1] === 'y' && this.getBoardFromCol(i-2)[j+2] === 'y' && this.getBoardFromCol(i-3)[j+3] === 'y'){
+                        else if (col[j] === 'y' && this.getBoardFromCol(i-1)[j-1] === 'y' && this.getBoardFromCol(i-2)[j-2] === 'y' && this.getBoardFromCol(i-3)[j-3] === 'y'){
                             // yellow won diagonally
                             this.socket.emit('gameOver', 'yellow');
                             this.gameOver = true;
