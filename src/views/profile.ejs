@@ -109,74 +109,9 @@
             </table>
             <br>
             <br>
-            <h1 style="text-decoration: underline">Friends list</h1>
-            <br>
-            <br>
-            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for friends..">
-            <br>
-            <br>
-            <table id="myTable">
-                <tr>
-                    <th>Username</th>
-                    <th>Division</th>
-                    <th>Rank Points</th>
-                    <th>Games Played</th>
-                    <th>Wins</th>
-                    <th>Losses</th>
-                    <th>Current Streak</th>
-                </tr>
-                <% for(var i=0; i<friends.length; i++) {%>
-                    <tr>
-                        <td>
-                            <%= friends[i].username %>
-                        </td>
-                        <td>
-                            <%= friends[i].user_division %>
-                        </td>
-                        <td>
-                            <%= friends[i].user_rankpoints %>
-                        </td>
-                        <td>
-                            <%= friends[i].user_gamesplayed %>
-                        </td>
-                        <td>
-                            <%= friends[i].user_wins %>
-                        </td>
-                        <td>
-                            <%= friends[i].user_losses %>
-                        </td>
-                        <td>
-                            <%= friends[i].user_streak %>
-                        </td>
-                    </tr>
-                    <% } %>
-            </table>
-            <br><br><br><br>
+            <br><br><br>
         </div>
     </section>
-    <script>
-        function myFunction() {
-            // Declare variables
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-
-            // Loop through all table rows, and hide those who don't match the search query
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
 </body>
 
 </html>
