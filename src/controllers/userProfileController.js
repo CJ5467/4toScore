@@ -1,16 +1,12 @@
 import connection from "../config/connectDB";
 
 let getUserProfile = (req, res) => {
-    findFriends(req.user.user_id, data => {
-        var friends = data;
-        //console.log(data);
-        return res.render("profile.ejs", {
-            user: req.user, friends
+    return res.render("profile.ejs", {
+            user: req.user
         })
-    });
 };
 
-
+/*
 function findFriends(user_id, callback) {
     connection.query("SELECT friend_username from friends where user_id = ?  ORDER BY friend_username ASC", user_id, function (error, friendname) {
         var friends = [];
@@ -33,7 +29,7 @@ function findFriends(user_id, callback) {
             })
         }
     })
-};
+};*/
 
 
 module.exports = {
