@@ -65,7 +65,7 @@ export default class GameScene extends Phaser.Scene {
         // when a move is made, render disk in the appropriate color and add to logical board
         this.socket.on('moveMade', (moveCol, wasPlayerA, roomId) => {
             if (this.isBoardFull()){
-                this.gameOver === true;
+                this.gameOver = true;
                 this.socket.emit('gameOver', 'No one');
             }
             if (this.gameOver === false){
