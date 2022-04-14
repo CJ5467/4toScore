@@ -56,7 +56,8 @@ export default class GameScene extends Phaser.Scene {
             let tempName = coinFlip === 0 ? playerAUsername + ' (Red) ' : playerBUsername + ' (Yellow) ';
             self.turnIndicator = this.add.rectangle(50,60,20,20, coinFlip === 0 ? 0xff0000 : 0xffff00 );
             self.turnText = this.add.text(20,20,'Turn:',{ fontSize: 26 });
-            this.chatMessages.push('Game started! ' + tempName);
+            this.chatMessages.push('Game started! ');
+            this.chatMessages.push(tempName);
             this.chatMessages.push('goes first!');
             this.chat.setText(this.chatMessages);
         });
@@ -106,15 +107,16 @@ export default class GameScene extends Phaser.Scene {
         // event for receiving a chat message from the server (originated from a player)
         this.socket.on('chatMsg', (message, wasPlayerA) => {
             let team = wasPlayerA === true ? '[' + this.playerAUsername + ']:' : '[' + this.playerBUsername + ']:';
+            message = team + message;
             let chunks = Math.ceil(message.length / 16);
-            let start = 0, end = 18;
+            let start = 0, end = 20;
             if (message.length > 20){
                 for (i = 0; i < chunks; i++){
                     let tempMsg = (message.slice(start, end));
-                    start += 18, end +=18;
+                    start += 20, end +=20;
                     if (tempMsg != ''){
                         if (i === 0){
-                            this.chatMessages.push(team + tempMsg);
+                            this.chatMessages.push(tempMsg);
                         }
                         else{
                             this.chatMessages.push(tempMsg.trim());
@@ -123,7 +125,7 @@ export default class GameScene extends Phaser.Scene {
                 }
             }
             else{
-                this.chatMessages.push(team + message);
+                this.chatMessages.push(message);
             }
             
             if (this.chatMessages.length > 12) {
