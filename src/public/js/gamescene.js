@@ -64,6 +64,10 @@ export default class GameScene extends Phaser.Scene {
 
         // when a move is made, render disk in the appropriate color and add to logical board
         this.socket.on('moveMade', (moveCol, wasPlayerA, roomId) => {
+            if (this.isBoardFull()){
+                this.gameOver === true;
+                this.socket.emit('gameOver', 'No one');
+            }
             if (this.gameOver === false){
                 this.renderDisk(moveCol, wasPlayerA);
                 this.getBoardFromCol(moveCol).push(wasPlayerA === true ? 'r' : 'y');
@@ -385,6 +389,17 @@ export default class GameScene extends Phaser.Scene {
                     }
                 }
             }
+        }
+    }
+    
+    isBoardFull(){
+        if (this.logicalBoard.col0.length === 6 && this.logicalBoard.col1.length === 6 && this.logicalBoard.col2.length === 6
+            && this.logicalBoard.col3.length === 6 && this.logicalBoard.col4.length === 6 && this.logicalBoard.col5.length === 6 &&
+            this.logicalBoard.col6.length === 6){
+                return true;
+            }
+        else{
+            return false;
         }
     }
 
