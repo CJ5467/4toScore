@@ -104,7 +104,7 @@ io.on('connection', async (socket) => {
         else {
             // pick a random open room and join it
             let randomRoom = Math.floor(Math.random() * openRooms.length);
-            if (socket.request.user.username != openRooms[randomRoom].playerAUsername){
+            if (socket.request.user.username != openRooms[randomRoom].playerAUsername) {
                 console.log(socket.request.user.username);
                 console.log(openRooms[randomRoom].playerAUsername);
                 await socket.join(openRooms[randomRoom].roomId);
@@ -113,7 +113,7 @@ io.on('connection', async (socket) => {
                 // do coin flip for whose turn it is, send that to client
                 let coinFlip = Math.floor(Math.random() * 2);
                 let roomId = openRooms[randomRoom].roomId;
-                io.in(roomId).emit('whoseTurn', coinFlip, openRooms[randomRoom].playerAUsername, openRooms[randomRoom].playerBUsername );
+                io.in(roomId).emit('whoseTurn', coinFlip, openRooms[randomRoom].playerAUsername, openRooms[randomRoom].playerBUsername);
                 // add room to active rooms and remove it from the list of open rooms
                 activeRooms.push(openRooms[randomRoom]);
                 openRooms.splice(randomRoom);
@@ -144,7 +144,7 @@ io.on('connection', async (socket) => {
                     index = i;
                 }
             }
-            if (socket.request.user.username != openRankedRooms[index].playerAUsername){
+            if (socket.request.user.username != openRankedRooms[index].playerAUsername) {
                 await socket.join(openRankedRooms[index].roomId);
                 openRankedRooms[index].playerBId = socket.id;
                 openRankedRooms[index].playerBUsername = socket.request.user.username;
@@ -209,180 +209,196 @@ io.on('connection', async (socket) => {
                 connection.query("UPDATE players SET user_wins=user_wins+1, user_streak=user_streak+1, user_rankpoints=user_rankpoints+20+(20*user_streak*.05) WHERE username=?", roomObj.playerAUsername, function (error, results) {
                     if (error) throw (error);
                     console.log("PLAYER A WINS UPDATED")
+                    //AFTER UPDATE GET USER_DIVISION AND UPDATED USER_RANKPOINTS
+                    connection.query("SELECT user_division, user_rankpoints from players where username = ?", roomObj.playerAUsername, function (error, results) {
+                        if (error) throw (error);
+                        //UPDATE PLAYER A RANK TO BRONZE IF OVER 0 OR BELOW 0
+                        if (results[0].user_rankpoints >= 0 && results.user_rankpoints < 250) {
+                            connection.query("UPDATE players SET user_division='Bronze' WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER A RANK TO SILVER IF OVER OR EQUAL 250
+                        else if (results[0].user_rankpoints >= 250 && results[0].user_rankpoints < 500) {
+                            connection.query("UPDATE players SET user_division='Silver' WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER A RANK TO GOLD IF OVER OR EQUAL 500
+                        else if (results[0].user_rankpoints >= 500 && results[0].user_rankpoints < 750) {
+                            connection.query("UPDATE players SET user_division='Gold' WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER A RANK TO DIAMOND IF OVER OR EQUAL 750
+                        else if (results[0].user_rankpoints >= 750 && results[0].user_rankpoints < 1000) {
+                            connection.query("UPDATE players SET user_division='Diamond' WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER A RANK TO PLATINUM IF OVER OR EQUAL 1000
+                        else if (results[0].user_rankpoints >= 1000) {
+                            connection.query("UPDATE players SET user_division='Platinum' WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                    })
                 })
-                //AFTER UPDATE GET USER_DIVISION AND UPDATED USER_RANKPOINTS
-                connection.query("SELECT user_division, user_rankpoints from players where username = ?", roomObj.playerAUsername, function (error, results) {
-                    if (error) throw (error);
-                    //UPDATE PLAYER A RANK TO BRONZE IF OVER 0 OR BELOW 0
-                    if((results[0].user_rankpoints>=0 && results[0].user_rankpoints<250) || results[0].user_rankpoints<0){
-                        connection.query("UPDATE players SET user_division='Bronze' WHERE username=?", roomObj.playerAUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER A RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER A RANK TO SILVER IF OVER OR EQUAL 250
-                    else if(results[0].user_rankpoints>=250 && results[0].user_rankpoints<500){
-                        connection.query("UPDATE players SET user_division='Silver' WHERE username=?", roomObj.playerAUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER A RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER A RANK TO GOLD IF OVER OR EQUAL 500
-                    else if(results[0].user_rankpoints>=500){
-                        connection.query("UPDATE players SET user_division='Gold' WHERE username=?", roomObj.playerAUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER A RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER A RANK TO DIAMOND IF OVER OR EQUAL 750
-                    else if(results[0].user_rankpoints>=750){
-                        connection.query("UPDATE players SET user_division='Diamond' WHERE username=?", roomObj.playerAUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER A RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER A RANK TO PLATINUM IF OVER OR EQUAL 1000
-                    else if(results[0].user_rankpoints>=1000){
-                        connection.query("UPDATE players SET user_division='Platinum' WHERE username=?", roomObj.playerAUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER A RANK UPDATED")
-                        })
-                    }
-                })
+
                 //SINCE RED/PLAYER A WON THEN YELLOW/PLAYER B LOST SO UPDATE LOSSES, STREAK, AND RANKPOINTS
-                connection.query("UPDATE players SET user_losses=user_losses+1, user_streak=user_streak-1, user_rankpoints=user_rankpoints-20-(20*user_streak*.05)  WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                connection.query("UPDATE players SET user_losses=user_losses+1, user_streak=user_streak-1, user_rankpoints=user_rankpoints-20+(20*user_streak*.05)  WHERE username=?", roomObj.playerBUsername, function (error, results) {
                     if (error) throw (error);
                     console.log("PLAYER B LOSSES UPDATED")
+                    //AFTER UPDATE GET USER_DIVISION & USER_RANKPOINTS
+                    connection.query("SELECT user_division, user_rankpoints from players where username = ?", roomObj.playerBUsername, function (error, results) {
+                        if (error) throw (error);
+                        //UPDATE PLAYER B RANK TO BRONZE IF NEEDED WHEN OVER OR EQUAL 0 OR WHEN BELOW 0
+                        if (results[0].user_rankpoints < 0) {
+                            connection.query("UPDATE players SET user_division='Bronze', user_rankpoints=0 WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                        else if (results[0].user_rankpoints >= 0 && results[0].user_rankpoints < 250) {
+                            connection.query("UPDATE players SET user_division='Bronze' WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER B RANK TO SILVER IF OVER OR EQUAL 250
+                        else if (results[0].user_rankpoints >= 250 && results[0].user_rankpoints < 500) {
+                            connection.query("UPDATE players SET user_division='Silver' WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER B RANK TO GOLD IF OVER OR EQUAL 500
+                        else if (results[0].user_rankpoints >= 500 && results[0].user_rankpoints < 750) {
+                            connection.query("UPDATE players SET user_division='Gold' WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER B RANK TO DIAMOND IF OVER OR EQUAL 750
+                        else if (results[0].user_rankpoints >= 750 && results[0].user_rankpoints < 1000) {
+                            connection.query("UPDATE players SET user_division='Diamond' WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER B RANK TO PLATINUM IF OVER OR EQUAL 1000
+                        else if (results[0].user_rankpoints >= 1000) {
+                            connection.query("UPDATE players SET user_division='Platinum' WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                    })
                 })
-                //AFTER UPDATE GET USER_DIVISION & USER_RANKPOINTS
-                connection.query("SELECT user_division, user_rankpoints from players where username = ?", roomObj.playerBUsername, function (error, results) {
-                    if (error) throw (error);
-                    //UPDATE PLAYER B RANK TO BRONZE IF NEEDED WHEN OVER OR EQUAL 0 OR WHEN BELOW 0
-                    if(results[0].user_rankpoints>=0 || results[0].user_rankpoints<0){
-                        connection.query("UPDATE players SET user_division='Bronze' WHERE username=?", roomObj.playerBUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER B RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER B RANK TO SILVER IF OVER OR EQUAL 250
-                    else if(results[0].user_rankpoints>=250){
-                        connection.query("UPDATE players SET user_division='Silver' WHERE username=?", roomObj.playerBUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER B RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER B RANK TO GOLD IF OVER OR EQUAL 500
-                    else if(results[0].user_rankpoints>=500){
-                        connection.query("UPDATE players SET user_division='Gold' WHERE username=?", roomObj.playerBUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER B RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER B RANK TO DIAMOND IF OVER OR EQUAL 750
-                    else if(results[0].user_rankpoints>=750){
-                        connection.query("UPDATE players SET user_division='Diamond' WHERE username=?", roomObj.playerBUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER B RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER B RANK TO PLATINUM IF OVER OR EQUAL 1000
-                    else if(results[0].user_rankpoints>=1000){
-                        connection.query("UPDATE players SET user_division='Platinum' WHERE username=?", roomObj.playerBUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER B RANK UPDATED")
-                        })
-                    }
-                })    
+
             }
             //IF YELLOW/PLAYER B WINS UPDATE WINS, STREAK, & RANKPOINTS
             else if (winner === 'yellow') {
                 connection.query("UPDATE players SET user_wins=user_wins+1, user_streak=user_streak+1, user_rankpoints=user_rankpoints+20+(20*user_streak*.05) WHERE username=?", roomObj.playerBUsername, function (error, results) {
                     if (error) throw (error);
                     console.log("PLAYER B WINS UPDATED")
+                    //AFTER UPDATE GET USER_DIVISION & USER_RANKPOINTS
+                    connection.query("SELECT user_division, user_rankpoints from players where username = ?", roomObj.playerBUsername, function (error, results) {
+                        if (error) throw (error);
+                        //UPDATE PLAYER B RANK TO BRONZE IF NEEDED WHEN OVER OR EQUAL 0 OR WHEN BELOW 0
+                        if (results[0].user_rankpoints >= 0 && results[0].user_rankpoints < 250) {
+                            connection.query("UPDATE players SET user_division='Bronze' WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER B RANK TO SILVER WHEN OVER OR EQUAL 250
+                        else if (results[0].user_rankpoints >= 250 && results[0].user_rankpoints < 500) {
+                            connection.query("UPDATE players SET user_division='Silver' WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER B RANK TO GOLD WHEN OVER OR EQUAL 500
+                        else if (results[0].user_rankpoints >= 500 && results[0].user_rankpoints < 750) {
+                            connection.query("UPDATE players SET user_division='Gold' WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER B RANK TO DIAMOND WHEN OVER OR EQUAL 750
+                        else if (results[0].user_rankpoints >= 750 && results[0].user_rankpoints < 1000) {
+                            connection.query("UPDATE players SET user_division='Diamond' WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER B RANK TO PLATINUM WHEN OVER OR EQUAL 1000
+                        else if (results[0].user_rankpoints >= 1000) {
+                            connection.query("UPDATE players SET user_division='Platinum' WHERE username=?", roomObj.playerBUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER B RANK UPDATED")
+                            })
+                        }
+                    })
                 })
-                //AFTER UPDATE GET USER_DIVISION & USER_RANKPOINTS
-                connection.query("SELECT user_division, user_rankpoints from players where username = ?", roomObj.playerBUsername, function (error, results) {
-                    if (error) throw (error);
-                    //UPDATE PLAYER B RANK TO BRONZE IF NEEDED WHEN OVER OR EQUAL 0 OR WHEN BELOW 0
-                    if(results[0].user_rankpoints>=0 || results[0].user_rankpoints<0){
-                        connection.query("UPDATE players SET user_division='Bronze' WHERE username=?", roomObj.playerBUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER B RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER B RANK TO SILVER WHEN OVER OR EQUAL 250
-                    else if(results[0].user_rankpoints>=250){
-                        connection.query("UPDATE players SET user_division='Silver' WHERE username=?", roomObj.playerBUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER B RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER B RANK TO GOLD WHEN OVER OR EQUAL 500
-                    else if(results[0].user_rankpoints>=500){
-                        connection.query("UPDATE players SET user_division='Gold' WHERE username=?", roomObj.playerBUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER B RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER B RANK TO DIAMOND WHEN OVER OR EQUAL 750
-                    else if(results[0].user_rankpoints>=750){
-                        connection.query("UPDATE players SET user_division='Diamond' WHERE username=?", roomObj.playerBUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER B RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER B RANK TO PLATINUM WHEN OVER OR EQUAL 1000
-                    else if(results[0].user_rankpoints>=1000){
-                        connection.query("UPDATE players SET user_division='Platinum' WHERE username=?", roomObj.playerBUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER B RANK UPDATED")
-                        })
-                    }
-                })
+
                 //SINCE YELLOW/PLAYER B WON THEN RED/PLAYER A LOST SO UPDATE LOSSES, STREAK, AND RANKPOINTS
-                connection.query("UPDATE players SET user_losses=user_losses+1, user_streak=user_streak-1 WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                connection.query("UPDATE players SET user_losses=user_losses+1, user_streak=user_streak-1, user_rankpoints=user_rankpoints-20+(20*user_streak*.05) WHERE username=?", roomObj.playerAUsername, function (error, results) {
                     if (error) throw (error);
                     console.log("PLAYER A LOSSES UPDATED")
+                    //AFTER UPDATE GET USER_DIVISION AND UPDATED USER_RANKPOINTS
+                    connection.query("SELECT user_division, user_rankpoints from players where username = ?", roomObj.playerAUsername, function (error, results) {
+                        if (error) throw (error);
+                        if (results[0].user_rankpoints < 0) {
+                            connection.query("UPDATE players SET user_division='Bronze', user_rankpoints=0 WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER A RANK TO BRONZE IF OVER 0 OR BELOW 0
+                        else if (results[0].user_rankpoints >= 0 && results[0].user_rankpoints < 250) {
+                            connection.query("UPDATE players SET user_division='Bronze' WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER A RANK TO SILVER IF OVER OR EQUAL 250
+                        else if (results[0].user_rankpoints >= 250 && results[0].user_rankpoints < 500) {
+                            connection.query("UPDATE players SET user_division='Silver' WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER A RANK TO GOLD IF OVER OR EQUAL 500
+                        else if (results[0].user_rankpoints >= 500 && results[0].user_rankpoints < 750) {
+                            connection.query("UPDATE players SET user_division='Gold' WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER A RANK TO DIAMOND IF OVER OR EQUAL 750
+                        else if (results[0].user_rankpoints >= 750 && results[0].user_rankpoints < 1000) {
+                            connection.query("UPDATE players SET user_division='Diamond' WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                        //UPDATE PLAYER A RANK TO PLATINUM IF OVER OR EQUAL 1000
+                        else if (results[0].user_rankpoints >= 1000) {
+                            connection.query("UPDATE players SET user_division='Platinum' WHERE username=?", roomObj.playerAUsername, function (error, results) {
+                                if (error) throw (error);
+                                console.log("PLAYER A RANK UPDATED")
+                            })
+                        }
+                    })
                 })
-                //AFTER UPDATE GET USER_DIVISION AND UPDATED USER_RANKPOINTS
-                connection.query("SELECT user_division, user_rankpoints from players where username = ?", roomObj.playerAUsername, function (error, results) {
-                    if (error) throw (error);
-                    //UPDATE PLAYER A RANK TO BRONZE IF OVER 0 OR BELOW 0
-                    if(results[0].user_rankpoints>=0 || results[0].user_rankpoints<0){
-                        connection.query("UPDATE players SET user_division='Bronze' WHERE username=?", roomObj.playerAUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER A RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER A RANK TO SILVER IF OVER OR EQUAL 250
-                    else if(results[0].user_rankpoints>=250){
-                        connection.query("UPDATE players SET user_division='Silver' WHERE username=?", roomObj.playerAUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER A RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER A RANK TO GOLD IF OVER OR EQUAL 500
-                    else if(results[0].user_rankpoints>=500){
-                        connection.query("UPDATE players SET user_division='Gold' WHERE username=?", roomObj.playerAUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER A RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER A RANK TO DIAMOND IF OVER OR EQUAL 750
-                    else if(results[0].user_rankpoints>=750){
-                        connection.query("UPDATE players SET user_division='Diamond' WHERE username=?", roomObj.playerAUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER A RANK UPDATED")
-                        })
-                    }
-                    //UPDATE PLAYER A RANK TO PLATINUM IF OVER OR EQUAL 1000
-                    else if(results[0].user_rankpoints>=1000){
-                        connection.query("UPDATE players SET user_division='Platinum' WHERE username=?", roomObj.playerAUsername, function (error, results) {
-                            if (error) throw (error);
-                            console.log("PLAYER A RANK UPDATED")
-                        })
-                    }
-                })
+
             }
         }
         //UPDATE GAMES PLAYED FOR BOTH USERS
@@ -390,7 +406,7 @@ io.on('connection', async (socket) => {
             if (error) throw (error);
             console.log("GAMES PLAYED UPDATED")
         })
-        
+
         // run database call to change stats based on who won **********************************************************
         /* check if it is a ranked match, if so grab the users' multipliers.  Add points to winner, subtract points
            from loser based on multiplier. */
