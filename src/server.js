@@ -214,14 +214,14 @@ io.on('connection', async (socket) => {
                 connection.query("SELECT user_division, user_rankpoints from players where username = ?", roomObj.playerAUsername, function (error, results) {
                     if (error) throw (error);
                     //UPDATE PLAYER A RANK TO BRONZE IF OVER 0 OR BELOW 0
-                    if(results[0].user_rankpoints>=0 || results[0].user_rankpoints<0){
+                    if((results[0].user_rankpoints>=0 && results[0].user_rankpoints<250) || results[0].user_rankpoints<0){
                         connection.query("UPDATE players SET user_division='Bronze' WHERE username=?", roomObj.playerAUsername, function (error, results) {
                             if (error) throw (error);
                             console.log("PLAYER A RANK UPDATED")
                         })
                     }
                     //UPDATE PLAYER A RANK TO SILVER IF OVER OR EQUAL 250
-                    else if(results[0].user_rankpoints>=250){
+                    else if(results[0].user_rankpoints>=250 && results[0].user_rankpoints<500){
                         connection.query("UPDATE players SET user_division='Silver' WHERE username=?", roomObj.playerAUsername, function (error, results) {
                             if (error) throw (error);
                             console.log("PLAYER A RANK UPDATED")
